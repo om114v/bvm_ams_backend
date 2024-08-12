@@ -53,7 +53,7 @@ export default class userController {
         });
         if (user != null) {
           const isMatch = await bcrypt.compare(password, user.password);
-          if (user.email === email && isMatch) {
+          if (user.email === email && isMatch ) {
             const accessToken = JWTHelper.createAccessToken(user._id);
             const refreshToken = JWTHelper.createRefreshToken(user._id);
             const data = {
