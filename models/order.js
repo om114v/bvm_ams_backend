@@ -3,8 +3,8 @@ const colSchema = new mongoose.Schema(
     {
         orderNo: { type: Number, required: true, unique: true },
         specification: { type: String, required: true },
-        purchaseDate: { type: Date },
-        orderDate: { type: Date },
+        purchaseDate: { type: Date, required: true },
+        orderDate: { type: Date, required: true },
         unitPrice: { type: Number, required: true },
         quantity: { type: Number, required: true },
         totalPrice: { type: Number, required: true },
@@ -14,4 +14,4 @@ const colSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-export const orderModel = mongoose.model("order", colSchema);
+export const orderModel = mongoose.model("Order", colSchema);
