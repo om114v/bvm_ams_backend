@@ -48,7 +48,7 @@ class issuedItemController {
     static getIssuedItem = async (req, res) => {
         const serialNo = req.params.serialNo;
         try {
-            const issuedItem = await issuedItemModel.findOne({ serialNo });
+            const issuedItem = await issuedItemModel.findOne({ serialNo: serialNo });
             if (!issuedItem) {
                 return res.error(404, "Issued item not found for this serial number.", null);
             }
@@ -65,13 +65,13 @@ class issuedItemController {
         const { issueDate, description, issuePersonName, purpose, returnDate } = req.body;
         try {
             session.startTransaction();
-            const issuedItem = await issuedItemModel.findOne({ serialNo });
+            const issuedItem = await issuedItemModel.findOne({ serialNo: serialNo });
             if (!issuedItem) {
                 return res.error(404, "Issued item not found for this serial number.", null);
             }
             if (issueDate && description && issuePersonName && purpose) {
                 const updatedIssuedItem = await issuedItemModel.updateOne(
-                    { serialNo },
+                    { serialNo: serialNo },
                     {
                         $set: {
                             issueDate,
@@ -102,11 +102,11 @@ class issuedItemController {
         const serialNo = req.params.serialNo;
         try {
             session.startTransaction();
-            const issuedItem = await issuedItemModel.findOne({ serialNo });
+            const issuedItem = await issuedItemModel.findOne({ serialNo: serialNo });
             if (!issuedItem) {
                 return res.error(404, "Issued item not found for this serial number.", null);
             }
-            const deletion = await issuedItemModel.deleteOne({ serialNo }, { session });
+            const deletion = await issuedItemModel.deleteOne({ serialNo: serialNo }, { session });
             await session.commitTransaction();
             return res.success(200, "Issued item deleted successfully.", deletion);
         } catch (error) {

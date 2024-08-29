@@ -7,7 +7,7 @@ class stockController {
         const { stockID, quantity, serialNo, description, purchaseOrderNo, billDate, billNo } = req.body;
         try {
             session.startTransaction();
-            const stock = await stockModel.findOne({ stockID });
+            const stock = await stockModel.findOne({ _id: stockID });
             if (stock) {
                 return res.error(400, "Stock ID already exists..!!!", null);
             }
@@ -49,7 +49,7 @@ class stockController {
     static getStock = async (req, res) => {
         const stockID = req.params.stockID;
         try {
-            const stock = await stockModel.findOne({ stockID });
+            const stock = await stockModel.findOne({ _id: stockId });
             if (!stock) {
                 return res.error(404, "Stock not found for this ID.", null);
             }
@@ -66,13 +66,13 @@ class stockController {
         const { quantity, serialNo, description, purchaseOrderNo, billDate, billNo } = req.body;
         try {
             session.startTransaction();
-            const stock = await stockModel.findOne({ stockID });
+            const stock = await stockModel.findOne({ _id: stockId });
             if (!stock) {
                 return res.error(404, "Stock not found for this ID.", null);
             }
             if (quantity && serialNo && description && purchaseOrderNo && billDate && billNo) {
                 const updatedStock = await stockModel.updateOne(
-                    { stockID },
+                    { _id: stockId },
                     {
                         $set: {
                             quantity,
@@ -104,11 +104,11 @@ class stockController {
         const stockID = req.params.stockID;
         try {
             session.startTransaction();
-            const stock = await stockModel.findOne({ stockID });
+            const stock = await stockModel.findOne({ _id: stockId });
             if (!stock) {
                 return res.error(404, "Stock not found for this ID.", null);
             }
-            const deletion = await stockModel.deleteOne({ stockID }, { session });
+            const deletion = await stockModel.deleteOne({ _id: stockId }, { session });
             await session.commitTransaction();
             return res.success(200, "Stock deleted successfully.", deletion);
         } catch (error) {
