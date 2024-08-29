@@ -4,16 +4,16 @@ import { productModel } from '../models/product.js';
 class productController {
     static addProduct = async (req, res) => {
         const session = await mongoose.startSession();
-        const { productID, productName, productCategory, specification } = req.body;
+        const { productId, productName, productCategory, specification } = req.body;
         try {
             session.startTransaction();
-            const product = await productModel.findOne({ _id: productID });
+            const product = await productModel.findOne({ _id: productId });
             if (product) {
                 return res.error(400, "Product ID already exists..!!!", null);
             }
-            if (productID && productName && productCategory && specification) {
+            if (productId && productName && productCategory && specification) {
                 const newProduct = new productModel({
-                    productID,
+                    productId,
                     productName,
                     productCategory,
                     specification,
@@ -44,9 +44,9 @@ class productController {
     }
 
     static getProduct = async (req, res) => {
-        const productID = req.params.productID;
+        const productId = req.params.productId;
         try {
-            const product = await productModel.findOne({ _id: productID });
+            const product = await productModel.findOne({ _id: productId });
             if (!product) {
                 return res.error(404, "Product not found for this ID.", null);
             }
@@ -59,17 +59,17 @@ class productController {
 
     static updateProduct = async (req, res) => {
         const session = await mongoose.startSession();
-        const productID = req.params.productID;
+        const productId = req.params.productId;
         const { productName, productCategory, specification } = req.body;
         try {
             session.startTransaction();
-            const product = await productModel.findOne({ _id: productID });
+            const product = await productModel.findOne({ _id: productId });
             if (!product) {
                 return res.error(404, "Product not found for this ID.", null);
             }
             if (productName && productCategory && specification) {
                 const updatedProduct = await productModel.updateOne(
-                    { _id: productID },
+                    { _id: productId },
                     {
                         $set: {
                             productName,
@@ -95,14 +95,14 @@ class productController {
 
     static deleteProduct = async (req, res) => {
         const session = await mongoose.startSession();
-        const productID = req.params.productID;
+        const productId = req.params.productId;
         try {
             session.startTransaction();
-            const product = await productModel.findOne({ _id: productID });
+            const product = await productModel.findOne({ _id: productId });
             if (!product) {
                 return res.error(404, "Product not found for this ID.", null);
             }
-            const deletion = await productModel.deleteOne({ _id: productID }, { session });
+            const deletion = await productModel.deleteOne({ _id: productId }, { session });
             await session.commitTransaction();
             return res.success(200, "Product deleted successfully.", deletion);
         } catch (error) {

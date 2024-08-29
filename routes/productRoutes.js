@@ -5,6 +5,6 @@ export const productRouter = express.Router();
 
 productRouter.post('/addProduct', productController.addProduct);
 productRouter.get('/getProducts', productController.getProducts);
-productRouter.put('/updateProduct/:productID', productController.updateProduct);
-productRouter.get('/getProduct/:productID', productController.getProduct);
-productRouter.delete('/deleteProduct/:productID', productController.deleteProduct);
+productRouter.put('/updateProduct/:productId', productController.updateProduct);
+productRouter.get('/getProduct/:productId', productController.getProduct);
+productRouter.delete('/deleteProduct/:productId', productController.deleteProduct);

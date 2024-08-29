@@ -4,16 +4,16 @@ import { stockModel } from '../models/stock.js';
 class stockController {
     static addStock = async (req, res) => {
         const session = await mongoose.startSession();
-        const { stockID, quantity, serialNo, description, purchaseOrderNo, billDate, billNo } = req.body;
+        const { stockId, quantity, serialNo, description, purchaseOrderNo, billDate, billNo } = req.body;
         try {
             session.startTransaction();
-            const stock = await stockModel.findOne({ _id: stockID });
+            const stock = await stockModel.findOne({ _id: stockId });
             if (stock) {
                 return res.error(400, "Stock ID already exists..!!!", null);
             }
-            if (stockID && quantity && serialNo && description && purchaseOrderNo && billDate && billNo) {
+            if (stockId && quantity && serialNo && description && purchaseOrderNo && billDate && billNo) {
                 const newStock = new stockModel({
-                    stockID,
+                    stockId,
                     quantity,
                     serialNo,
                     description,
@@ -47,7 +47,7 @@ class stockController {
     }
 
     static getStock = async (req, res) => {
-        const stockID = req.params.stockID;
+        const stockId = req.params.stockId;
         try {
             const stock = await stockModel.findOne({ _id: stockId });
             if (!stock) {
@@ -62,7 +62,7 @@ class stockController {
 
     static updateStock = async (req, res) => {
         const session = await mongoose.startSession();
-        const stockID = req.params.stockID;
+        const stockId = req.params.stockId;
         const { quantity, serialNo, description, purchaseOrderNo, billDate, billNo } = req.body;
         try {
             session.startTransaction();
@@ -101,7 +101,7 @@ class stockController {
 
     static deleteStock = async (req, res) => {
         const session = await mongoose.startSession();
-        const stockID = req.params.stockID;
+        const stockId = req.params.stockId;
         try {
             session.startTransaction();
             const stock = await stockModel.findOne({ _id: stockId });
