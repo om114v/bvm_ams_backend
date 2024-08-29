@@ -10,7 +10,7 @@ class JWTHelper {
   };
 
   static verifyUserAccessToken = async (token) => {
-    const { userID } = jwt.verify(token, JWT_KEY_1);
+    const { userId } = jwt.verify(token, JWT_KEY_1);
     const user = await userModel.findById(userID).select("-password");
     return user;
   };
@@ -22,7 +22,7 @@ class JWTHelper {
   };
 
   static verifyUserRefreshToken = async (token) => {
-    const { userID } = jwt.verify(token, JWT_KEY_2);
+    const { userId } = jwt.verify(token, JWT_KEY_2);
     const user = await userModel.findById(userID).select("-password");
     return user;
   };
@@ -34,7 +34,7 @@ class JWTHelper {
   }
 
   static verifyUserPasswordChangeToken = async (token) => {
-    const { userID } = jwt.verify(token, JWT_KEY_3);
+    const { userId } = jwt.verify(token, JWT_KEY_3);
     const user = await userModel.findById(userID).select("-password");
     return user;
   };

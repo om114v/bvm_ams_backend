@@ -92,7 +92,7 @@ export default class userController {
   static getUser = async (req, res) => {
     const userID = req.params.userID;
     try {
-      const user = await userModel.findOne({ userID });
+      const user = await userModel.findOne({ _id: userId });
       if (!user) {
         return res.error(404, "User not found for this ID.", null);
       }
@@ -108,13 +108,13 @@ export default class userController {
     const { email, password, role } = req.body;
     try {
       session.startTransaction();
-      const user = await userModel.findOne({ userID });
+      const user = await userModel.findOne({ _id: userId });
       if (!user) {
         return res.error(404, "User not found for this ID.", null);
       }
       if (email && password && role) {
         const updatedUser = await userModel.updateOne(
-          { userID },
+          { _id: userId },
           {
             $set: {
               email,
@@ -143,11 +143,11 @@ export default class userController {
     const userID = req.params.userID;
     try {
       session.startTransaction();
-      const user = await userModel.findOne({ userID });
+      const user = await userModel.findOne({ _id: userId });
       if (!user) {
         return res.error(404, "user not found for this ID.", null);
       }
-      const deletion = await userModel.deleteOne({ userID }, { session });
+      const deletion = await userModel.deleteOne({ _id: userId }, { session });
       await session.commitTransaction();
       return res.success(200, "User deleted successfully.", deletion);
     } catch (error) {
