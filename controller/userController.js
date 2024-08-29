@@ -53,7 +53,7 @@ export default class userController {
         });
         if (user != null) {
           const isMatch = await bcrypt.compare(password, user.password);
-          if (user.email === email && isMatch ) {
+          if (user.email === email && isMatch) {
             const accessToken = JWTHelper.createAccessToken(user._id);
             const refreshToken = JWTHelper.createRefreshToken(user._id);
             const data = {
@@ -78,6 +78,28 @@ export default class userController {
       return res.error(400, error, null);
     } finally {
       session.endSession();
+    }
+  };
+  static getUsers = async (req, res) => {
+    try {
+      const users = await userModel.find();
+      return res.success(200, "All users found successfully.", users);
+    } catch (error) {
+      console.log("Error fetching users: " + error);
+      return res.error(400, error, null);
+    }
+  };
+  static getUser = async (req, res) => {
+    const userID = req.params.userID;
+    try {
+      const user = await userModel.findOne({ userID });
+      if (!user) {
+        return res.error(404, "User not found for this ID.", null);
+      }
+      return res.success(200, "User found successfully.", user);
+    } catch (error) {
+      console.log("Error fetching user: " + error);
+      return res.error(400, error, null);
     }
   };
 };
