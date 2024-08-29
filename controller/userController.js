@@ -102,4 +102,60 @@ export default class userController {
       return res.error(400, error, null);
     }
   };
+  static updateUser = async (req, res) => {
+    const session = await mongoose.startSession();
+    const userID = req.params.userID;
+    const { email, password, role } = req.body;
+    try {
+      session.startTransaction();
+      const user = await userModel.findOne({ userID });
+      if (!user) {
+        return res.error(404, "User not found for this ID.", null);
+      }
+      if (email && password && role) {
+        const updatedUser = await userModel.updateOne(
+          { userID },
+          {
+            $set: {
+              email,
+              password,
+              role
+            },
+          },
+          { session }
+        );
+        await session.commitTransaction();
+        return res.success(200, "User updated successfully.", updatedUser);
+      } else {
+        return res.error(400, "Please fill all the required details...!", null);
+      }
+    } catch (error) {
+      await session.abortTransaction();
+      console.log("Transaction aborted : " + error);
+      return res.error(400, error, null);
+    } finally {
+      session.endSession();
+    }
+  };
+
+  static deleteUser = async (req, res) => {
+    const session = await mongoose.startSession();
+    const userID = req.params.userID;
+    try {
+      session.startTransaction();
+      const user = await userModel.findOne({ userID });
+      if (!user) {
+        return res.error(404, "user not found for this ID.", null);
+      }
+      const deletion = await userModel.deleteOne({ userID }, { session });
+      await session.commitTransaction();
+      return res.success(200, "User deleted successfully.", deletion);
+    } catch (error) {
+      await session.abortTransaction();
+      console.log("Transaction aborted : " + error);
+      return res.error(400, error, null);
+    } finally {
+      session.endSession();
+    }
+  }
 };
