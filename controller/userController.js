@@ -90,7 +90,7 @@ export default class userController {
     }
   };
   static getUser = async (req, res) => {
-    const userID = req.params.userID;
+    const userId = req.params.userId;
     try {
       const user = await userModel.findOne({ _id: userId });
       if (!user) {
@@ -104,7 +104,7 @@ export default class userController {
   };
   static updateUser = async (req, res) => {
     const session = await mongoose.startSession();
-    const userID = req.params.userID;
+    const userId = req.params.userId;
     const { email, password, role } = req.body;
     try {
       session.startTransaction();
@@ -140,7 +140,7 @@ export default class userController {
 
   static deleteUser = async (req, res) => {
     const session = await mongoose.startSession();
-    const userID = req.params.userID;
+    const userId = req.params.userId;
     try {
       session.startTransaction();
       const user = await userModel.findOne({ _id: userId });

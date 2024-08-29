@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const stockSchema = new mongoose.Schema(
     {
-        stockID: { type: Number, required: true, unique: true },
+        stockId: { type: Number, required: true, unique: true },
         quantity: { type: Number, required: true },
         serialNo: { type: String, required: true },
         description: { type: String, required: true },
