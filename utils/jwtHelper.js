@@ -3,8 +3,8 @@ import { userModel } from "../models/User.js";
 import { JWT_KEY_1, JWT_KEY_2 } from "../config/env.js";
 
 class JWTHelper {
-  static createAccessToken = (id) => {
-    return jwt.sign({ userId: id }, JWT_KEY_1, {
+  static createAccessToken = (Id) => {
+    return jwt.sign({ userId: Id }, JWT_KEY_1, {
       expiresIn: "1d",
     });
   };
@@ -15,8 +15,8 @@ class JWTHelper {
     return user;
   };
 
-  static createRefreshToken = (id) => {
-    return jwt.sign({ userId: id }, JWT_KEY_2, {
+  static createRefreshToken = (Id) => {
+    return jwt.sign({ userId: Id }, JWT_KEY_2, {
       expiresIn: "1y",
     });
   };
@@ -27,8 +27,8 @@ class JWTHelper {
     return user;
   };
 
-  static createUserPasswordChangeToken = (id) => {
-    return jwt.sign({ userId: id }, JWT_KEY_3, {
+  static createUserPasswordChangeToken = (Id) => {
+    return jwt.sign({ userId: Id }, JWT_KEY_3, {
       expiresIn: "15m",
     });
   }
