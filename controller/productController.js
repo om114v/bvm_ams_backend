@@ -4,19 +4,20 @@ import { productModel } from '../models/product.js';
 class productController {
     static addProduct = async (req, res) => {
         const session = await mongoose.startSession();
-        const { productId, productName, productCategory, specification } = req.body;
+        const { productId, productName, productCategory, specification, location } = req.body;
         try {
             session.startTransaction();
             const product = await productModel.findOne({ productId: productId });
             if (product) {
                 return res.error(400, "Product Id already exists..!!!", null);
             }
-            if (productId && productName && productCategory && specification) {
+            if (productId && productName && productCategory && specification && location) {
                 const newProduct = new productModel({
                     productId,
                     productName,
                     productCategory,
                     specification,
+                    location
                 });
                 const savedProduct = await newProduct.save({ session });
                 await session.commitTransaction();
@@ -60,14 +61,14 @@ class productController {
     static updateProduct = async (req, res) => {
         const session = await mongoose.startSession();
         const productId = req.params.productId;
-        const { productName, productCategory, specification } = req.body;
+        const { productName, productCategory, specification, location } = req.body;
         try {
             session.startTransaction();
             const product = await productModel.findOne({ productId: productId });
             if (!product) {
                 return res.error(404, "Product not found for this Id.", null);
             }
-            if (productName && productCategory && specification) {
+            if (productName && productCategory && specification && location) {
                 const updatedProduct = await productModel.updateOne(
                     { productId: productId },
                     {
@@ -75,6 +76,7 @@ class productController {
                             productName,
                             productCategory,
                             specification,
+                            location
                         },
                     },
                     { session }
