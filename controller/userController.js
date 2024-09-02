@@ -94,7 +94,7 @@ export default class userController {
     try {
       const user = await userModel.findOne({ _id: userId });
       if (!user) {
-        return res.error(404, "User not found for this ID.", null);
+        return res.error(404, "User not found for this Id.", null);
       }
       return res.success(200, "User found successfully.", user);
     } catch (error) {
@@ -110,7 +110,7 @@ export default class userController {
       session.startTransaction();
       const user = await userModel.findOne({ _id: userId });
       if (!user) {
-        return res.error(404, "User not found for this ID.", null);
+        return res.error(404, "User not found for this Id.", null);
       }
       if (email && password && role) {
         const updatedUser = await userModel.updateOne(
@@ -145,7 +145,7 @@ export default class userController {
       session.startTransaction();
       const user = await userModel.findOne({ _id: userId });
       if (!user) {
-        return res.error(404, "user not found for this ID.", null);
+        return res.error(404, "user not found for this Id.", null);
       }
       const deletion = await userModel.deleteOne({ _id: userId }, { session });
       await session.commitTransaction();

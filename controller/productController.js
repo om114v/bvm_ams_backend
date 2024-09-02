@@ -7,9 +7,9 @@ class productController {
         const { productId, productName, productCategory, specification } = req.body;
         try {
             session.startTransaction();
-            const product = await productModel.findOne({ _id: productId });
+            const product = await productModel.findOne({ productId: productId });
             if (product) {
-                return res.error(400, "Product ID already exists..!!!", null);
+                return res.error(400, "Product Id already exists..!!!", null);
             }
             if (productId && productName && productCategory && specification) {
                 const newProduct = new productModel({
@@ -46,9 +46,9 @@ class productController {
     static getProduct = async (req, res) => {
         const productId = req.params.productId;
         try {
-            const product = await productModel.findOne({ _id: productId });
+            const product = await productModel.findOne({ productId: productId });
             if (!product) {
-                return res.error(404, "Product not found for this ID.", null);
+                return res.error(404, "Product not found for this Id.", null);
             }
             return res.success(200, "Product found successfully.", product);
         } catch (error) {
@@ -63,13 +63,13 @@ class productController {
         const { productName, productCategory, specification } = req.body;
         try {
             session.startTransaction();
-            const product = await productModel.findOne({ _id: productId });
+            const product = await productModel.findOne({ productId: productId });
             if (!product) {
-                return res.error(404, "Product not found for this ID.", null);
+                return res.error(404, "Product not found for this Id.", null);
             }
             if (productName && productCategory && specification) {
                 const updatedProduct = await productModel.updateOne(
-                    { _id: productId },
+                    { productId: productId },
                     {
                         $set: {
                             productName,
@@ -98,11 +98,11 @@ class productController {
         const productId = req.params.productId;
         try {
             session.startTransaction();
-            const product = await productModel.findOne({ _id: productId });
+            const product = await productModel.findOne({ productId: productId });
             if (!product) {
-                return res.error(404, "Product not found for this ID.", null);
+                return res.error(404, "Product not found for this Id.", null);
             }
-            const deletion = await productModel.deleteOne({ _id: productId }, { session });
+            const deletion = await productModel.deleteOne({ productId: productId }, { session });
             await session.commitTransaction();
             return res.success(200, "Product deleted successfully.", deletion);
         } catch (error) {
