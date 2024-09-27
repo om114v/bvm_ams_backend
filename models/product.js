@@ -4,7 +4,6 @@ const productSchema = new mongoose.Schema({
   productId: {
     type: String,
     required: true,
-    unique: true,
   },
   productName: {
     type: String,
@@ -27,4 +26,6 @@ const productSchema = new mongoose.Schema({
   screenType: String,
 });
 
-export default mongoose.model('Product', productSchema);
+
+
+export const productModel = mongoose.model('Product', productSchema);
