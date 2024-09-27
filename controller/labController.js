@@ -27,7 +27,7 @@ class LabController {
     console.log('Lab Name:', labName);
 
     // Define directory path for the frontend
-    const dirPath = path.join('F:/ams/bvm_ams_frontend/src/app/views/labs');
+    const dirPath = path.join('C:/Users/prince/Downloads/matx-react-4.0.0/bvm_ams_frontend/src/app/views/labs');
     const filePath = path.join(dirPath, `${labName}LabLayout.jsx`);
 
     console.log('File Path:', filePath);
