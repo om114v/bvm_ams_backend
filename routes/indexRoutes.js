@@ -4,9 +4,9 @@ import { userRouter } from "./userRoutes.js";
 import { orderRouter } from "./orderRoutes.js";
 import userController from "../controller/userController.js";
 import { issuedItemRouter } from "./issuedItemRoutes.js";
-import { productRouter } from "./productRoutes.js";
+// import { productRouter } from "./productRoutes.js";
 import { stockRouter } from "./stockRoutes.js";
-
+import productRouter  from "./productRoutes.js";
 export const router = express.Router();
 
 router.post('/api/user/userLogin', userController.userLogin);
