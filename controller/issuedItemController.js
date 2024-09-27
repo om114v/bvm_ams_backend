@@ -61,17 +61,17 @@ class issuedItemController {
 
     static updateIssuedItem = async (req, res) => {
         const session = await mongoose.startSession();
-        const serialNo = req.params.serialNo;
+        const id = req.params.id;
         const { issueDate, description, issuePersonName, purpose, returnDate } = req.body;
         try {
             session.startTransaction();
-            const issuedItem = await issuedItemModel.findOne({ serialNo: serialNo });
+            const issuedItem = await issuedItemModel.findOne({ _id: id });
             if (!issuedItem) {
                 return res.error(404, "Issued item not found for this serial number.", null);
             }
             if (issueDate && description && issuePersonName && purpose) {
                 const updatedIssuedItem = await issuedItemModel.updateOne(
-                    { serialNo: serialNo },
+                    { _id: id },
                     {
                         $set: {
                             issueDate,
@@ -99,14 +99,14 @@ class issuedItemController {
 
     static deleteIssuedItem = async (req, res) => {
         const session = await mongoose.startSession();
-        const serialNo = req.params.serialNo;
+        const id = req.params.id;
         try {
             session.startTransaction();
-            const issuedItem = await issuedItemModel.findOne({ serialNo: serialNo });
+            const issuedItem = await issuedItemModel.findOne({ _id: id });
             if (!issuedItem) {
                 return res.error(404, "Issued item not found for this serial number.", null);
             }
-            const deletion = await issuedItemModel.deleteOne({ serialNo: serialNo }, { session });
+            const deletion = await issuedItemModel.deleteOne({ _id: id }, { session });
             await session.commitTransaction();
             return res.success(200, "Issued item deleted successfully.", deletion);
         } catch (error) {
