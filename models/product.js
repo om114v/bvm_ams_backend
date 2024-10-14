@@ -24,6 +24,7 @@ const productSchema = new mongoose.Schema({
   hdd: String,
   ssd: String,
   screenType: String,
+  ip:String,
 });
 
 

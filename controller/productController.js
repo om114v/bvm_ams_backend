@@ -60,6 +60,34 @@ class productController {
             res.status(500).json({ message: 'Error deleting product', error });
         }
     };
+
+
+    static getFilteredProducts = async (req, res) => {
+        try {
+          const { ram, purchaseYear, ssd, hdd } = req.query;  // Getting filter criteria from query parameters
+
+          let filter = {};
+
+          if (ram) filter.ram = ram;
+          if (purchaseYear) filter.purchaseYear = purchaseYear;
+          if (ssd) filter.ssd = ssd;
+          if (hdd) filter.hdd = hdd;
+
+          // Querying the database with the filters
+          const products = await productModel.find(filter);
+
+          if (products.length === 0) {
+            return res.status(404).json({ message:   "No products found with the specified filters." });
+          }
+          res.status(200).json({ products });
+
+        } catch (error) {
+          console.error('Error fetching products:', error);
+          res.status(500).json({ message: "Server error, please try again later." });
+        }
+      };
+
+
 }
 
 export default productController;
