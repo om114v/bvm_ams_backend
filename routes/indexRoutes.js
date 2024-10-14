@@ -8,6 +8,7 @@ import { issuedItemRouter } from "./issuedItemRoutes.js";
 import { stockRouter } from "./stockRoutes.js";
 import productRouter  from "./productRoutes.js";
 import { labRouter } from "./labRoutes.js";
+import { dashboardRouter } from "./dashboardRoutes.js";
 export const router = express.Router();
 
 router.post('/api/user/userLogin', userController.userLogin);
@@ -18,5 +19,6 @@ router.use("/api/issuedItem", issuedItemRouter);
 router.use("/api/product", productRouter);
 router.use("/api/stock", stockRouter);
 router.use("/api/labs", labRouter);
+router.use("/api/dashboard", dashboardRouter);
 
 
