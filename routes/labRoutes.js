@@ -41,3 +41,5 @@ labRouter.delete('/:labName', LabController.deleteLab);
 // Route to get a specific lab layout by name
 labRouter.get('/:labName/layout', LabController.getLabLayout);
 
+labRouter.post('/assign/labassignment',LabController.assignLab)
+

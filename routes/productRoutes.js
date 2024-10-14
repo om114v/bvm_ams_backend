@@ -10,5 +10,5 @@ router.get('/getProductById/:id', productController.getProductById);
 router.get('/getProductCategory/:category', productController.getProductCategory);
 router.put('/updateProduct/:id', productController.updateProduct);
 router.delete('/deleteProduct/:id', productController.deleteProduct);
-
+router.get('/filterproducts', productController.getFilteredProducts);
 export default router;

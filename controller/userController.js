@@ -57,6 +57,7 @@ export default class userController {
             const accessToken = JWTHelper.createAccessToken(user._id);
             const refreshToken = JWTHelper.createRefreshToken(user._id);
             const data = {
+              email:user.email,
               role: user.role,
               accessToken: accessToken,
               refreshToken: refreshToken,
@@ -113,6 +114,9 @@ export default class userController {
         return res.error(404, "User not found for this Id.", null);
       }
       if (email && password && role) {
+        const salt = await bcrypt.genSalt(10);
+        const hashPass = await bcrypt.hash(password, salt);
+        password = hashPass;
         const updatedUser = await userModel.updateOne(
           { _id: userId },
           {

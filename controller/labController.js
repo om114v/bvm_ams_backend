@@ -49,7 +49,7 @@ class LabController {
     import ChairIcon from '@mui/icons-material/Chair';
     import axios from 'axios';
     import { BASE_URL } from 'envConfig'; // Replace with your config
-    
+
     const LabLayoutRoot = styled('div')(({ theme }) => ({
       margin: '30px',
       [theme.breakpoints.down('sm')]: { margin: '16px' },
@@ -66,7 +66,7 @@ class LabController {
         marginTop: theme.spacing(4),
       },
     }));
-    
+
     const RotatedPaper = styled(Paper)(({ top, left }) => ({
       position: 'absolute',
       width: 100,
@@ -74,7 +74,7 @@ class LabController {
       left: \`\${left}px\`,
       cursor: 'move',
     }));
-    
+
     // PC component with icons and drag-and-drop functionality
     const PC = ({ index, top, left, movePC, isEditMode }) => {
       const [, drag] = useDrag({
@@ -90,11 +90,11 @@ class LabController {
           }
         },
       });
-    
+
       const handleClick = (componentName) => {
         alert(\`Clicked on: \${componentName}\`);
       };
- 
+
       return (
         <RotatedPaper ref={drag} top={top} left={left}>
           <Grid container spacing={1}>
@@ -150,31 +150,31 @@ class LabController {
         </RotatedPaper>
       );
     };
-    
+
     export default function ${labName}LabLayout() {
       const [isEditMode, setEditMode] = useState(false);
       const [pcPositions, setPcPositions] = useState([...Array(${numSystems})].map(() => ({ top: 0, left: 0 })));
       const [userRole, setUserRole] = useState('');
-    
+
       // Fetch positions from the database on mount
       useEffect(() => {
         const fetchLabLayout = async () => {
           try {
           const headers = {
       Authorization: "Bearer " + localStorage.getItem('token'),
-      'Content-Type': 'application/json', 
+      'Content-Type': 'application/json',
     };
             const response = await axios.get(\`\${BASE_URL}/labs/${labName}/layout\`,{ headers });
             setPcPositions(response.data.data || pcPositions);
-            const storedRole = localStorage.getItem('role'); 
+            const storedRole = localStorage.getItem('role');
         setUserRole(storedRole);
           } catch (error) {
             console.error('Error fetching lab layout:', error);
           }
         };
         fetchLabLayout();
-      },[]); 
-    
+      },[]);
+
       const movePC = (index, newTop, newLeft) => {
         setPcPositions((prevPositions) => {
           const updatedPositions = [...prevPositions];
@@ -182,7 +182,7 @@ class LabController {
           return updatedPositions;
         });
       };
-    
+
       const saveLayout = async () => {
         try {
         const headers = {
@@ -195,13 +195,13 @@ class LabController {
           console.error('Error saving layout:', error);
         }
       };
-    
+
       return (
         <LabLayoutRoot>
           <Box className="breadcrumb">
             <Breadcrumb routeSegments={[{ name: 'Labs', path: '/labs' }, { name: '${labName}' }]} />
           </Box>
-    
+
           <SimpleCard title="${labName}">
            {userRole === 'Coordinator' && (
             <Button variant="contained" onClick={() => (isEditMode ? saveLayout() : setEditMode(true))}>
@@ -224,7 +224,7 @@ class LabController {
       );
     }
     `;
-    
+
     // Write the content to the file
     fs.writeFile(filePath, content, (err) => {
       if (err) {
@@ -301,29 +301,29 @@ static addLab = async (req, res) => {
       return res.status(500).json({ message: error.message });
     }
   };
-  
+
   static updateLabLayout = async (req, res) => {
     const labName = req.params.labName;
     const { pcPositions } = req.body;
   console.log("heyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
-  
+
     try {
       const lab = await labModel.findOne({ labName });
       if (!lab) {
         return res.status(404).json({ message: "Lab not found." });
       }
-  
+
       // Update the pcCoordinates with the new positions
       lab.pcCoordinates = pcPositions; // Update the pcCoordinates field
       const updatedLab = await lab.save();
-  
+
       return res.status(200).json({ message: "Lab layout updated successfully.", data: updatedLab });
     } catch (error) {
       console.log("Error updating lab layout: " + error);
       return res.status(400).json({ message: error.message });
     }
   };
-  
+
 
   // Update a Lab
   static updateLab = async (req, res) => {
@@ -357,6 +357,44 @@ static addLab = async (req, res) => {
       return res.status(400).json({ message: error.message });
     }
   };
+
+  static assignLab = async (req, res) => {
+    const { assignedTo, assignedBy, labNames: labName, remarks } = req.body; // Destructure values from request body
+
+    try {
+      const updation = [];
+      for (const lab of labName) {
+        const update = await labModel.updateOne(
+          { labName: lab }, // Matching the lab by labName
+          {
+            $set: {
+              labAssistant: {
+                cemail: assignedBy,
+                aemail: assignedTo,
+                remarks: remarks
+              }
+            }
+          },
+          { new: true }
+        );
+        updation.push(lab); // Add the updated lab name to the result
+      }
+
+      return res.status(200).json({
+        message: "Lab assigned successfully.",
+        updatedLabs: updation,
+      });
+    } catch (error) {
+      console.error("Error while assigning labs: ", error);
+      return res.status(400).json({
+        message: "Failed to assign labs.",
+        error: error.message,
+      });
+    }
+  };
+
+
+
 }
 
 export default LabController;

@@ -11,6 +11,12 @@ const labSchema = new mongoose.Schema(
         left: { type: Number, required: true ,default: 0},
       }
     ],
+    labAssistant: {
+
+      cemail: { type: String, ref: "user" }, // Co-Ordinator Id
+      aemail: { type: String, ref: "user" }, // Assistant Id
+      remarks: { type: String }
+    },
   },
   { timestamps: true }
 );
