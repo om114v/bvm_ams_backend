@@ -69,7 +69,7 @@ class productController {
           let filter = {};
 
           if (ram) filter.ram = ram;
-          if (purchaseYear) filter.purchaseYear = purchaseYear;
+          if (purchaseYear) filter.purchaseYear = parseInt(purchaseYear);
           if (ssd) filter.ssd = ssd;
           if (hdd) filter.hdd = hdd;
 
@@ -87,6 +87,17 @@ class productController {
         }
       };
 
+      static getProductsByLocation = async (req, res) => {
+        try {
+            const location = req.params.location;
+            const products = await productModel.find({ location: location });
+            const data = {products};
+            return res.success(201, "Products found successfully.", data);
+        } catch (error) {
+            console.log("Transaction aborted : " + error);
+            return res.error(400, error, null);
+        }
+    };
 
 }
 

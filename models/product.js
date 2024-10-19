@@ -19,7 +19,7 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  purchaseYear: String,
+  purchaseYear: Number,
   ram: String,
   hdd: String,
   ssd: String,

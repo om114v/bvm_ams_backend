@@ -1,11 +1,11 @@
-import dashboardController from "../controller/dashboardController";
+import dashboardController from "../controller/dashboardController.js";
 import express from "express";
 
 export const dashboardRouter = express.Router();
-dashboardController.get('/getAIOCount', dashboardController.getAIOCount);
-dashboardController.get('/getCPUCount', dashboardController.getCPUCount);
-dashboardController.get('/getKeyboardCount', dashboardController.getKeyboardCount);
-dashboardController.get('/getMonitorCount', dashboardController.getMonitorCount);
-dashboardController.get('/getMouseCount', dashboardController.getMouseCount);
+dashboardRouter.get('/getAIOCount', dashboardController.getAIOCount);
+dashboardRouter.get('/getCPUCount', dashboardController.getCPUCount);
+dashboardRouter.get('/getKeyboardCount', dashboardController.getKeyboardCount);
+dashboardRouter.get('/getMonitorCount', dashboardController.getMonitorCount);
+dashboardRouter.get('/getMouseCount', dashboardController.getMouseCount);
 
 
