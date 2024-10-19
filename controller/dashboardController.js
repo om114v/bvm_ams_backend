@@ -1,12 +1,21 @@
-import { productModel } from "../models/product";
+import { productModel } from "../models/product.js";
 
 
 
 class dashboardController {
     static getAIOCount = async (req, res) => {
         try {
-            const products = (await productModel.find({ productCategory: "All-In-One" })).length;
-            return res.success(201, "All AIOs found successfully.", products);
+            const products = await productModel.find({ productCategory: "All-In-One" });
+            const productsCount = products.reduce((acc, product) => {
+                const year = product.purchaseYear;
+                if (acc[year]) {
+                  acc[year]++;
+                } else {
+                  acc[year] = 1;
+                }
+                return acc;
+              }, {});
+            return res.success(201, "All AIOs found successfully.", productsCount);
         } catch (error) {
             console.log("Transaction aborted : " + error);
             return res.error(400, error, null);
@@ -15,8 +24,17 @@ class dashboardController {
 
     static getMonitorCount = async (req, res) => {
         try {
-            const products = (await productModel.find({ productCategory: "Monitor" })).length;
-            return res.success(201, "All Monitors found successfully.", products);
+            const products = await productModel.find({ productCategory: "Monitor" });
+            const productsCount = products.reduce((acc, product) => {
+                const year = product.purchaseYear;
+                if (acc[year]) {
+                  acc[year]++;
+                } else {
+                  acc[year] = 1;
+                }
+                return acc;
+              }, {});
+            return res.success(201, "All Monitors found successfully.", productsCount);
         } catch (error) {
             console.log("Transaction aborted : " + error);
             return res.error(400, error, null);
@@ -24,8 +42,17 @@ class dashboardController {
     }
     static getMouseCount = async (req, res) => {
         try {
-            const products = (await productModel.find({ productCategory: "Mouse" })).length;
-            return res.success(201, "All Mouse found successfully.", products);
+            const products = await productModel.find({ productCategory: "Mouse" });
+            const productsCount = products.reduce((acc, product) => {
+                const year = product.purchaseYear;
+                if (acc[year]) {
+                  acc[year]++;
+                } else {
+                  acc[year] = 1;
+                }
+                return acc;
+              }, {});
+            return res.success(201, "All Mouse found successfully.", productsCount);
         } catch (error) {
             console.log("Transaction aborted : " + error);
             return res.error(400, error, null);
@@ -33,8 +60,17 @@ class dashboardController {
     }
     static getKeyboardCount = async (req, res) => {
         try {
-            const products = (await productModel.find({ productCategory: "Keyboard" })).length;
-            return res.success(201, "All Keyboard found successfully.", products);
+            const products = await productModel.find({ productCategory: "Keyboard" });
+            const productsCount = products.reduce((acc, product) => {
+                const year = product.purchaseYear;
+                if (acc[year]) {
+                  acc[year]++;
+                } else {
+                  acc[year] = 1;
+                }
+                return acc;
+              }, {});
+            return res.success(201, "All Keyboard found successfully.", productsCount);
         } catch (error) {
             console.log("Transaction aborted : " + error);
             return res.error(400, error, null);
@@ -42,8 +78,17 @@ class dashboardController {
     }
     static getCPUCount = async (req, res) => {
         try {
-            const products = (await productModel.find({ productCategory: "CPU" })).length;
-            return res.success(201, "All CPU found successfully.", products);
+            const products = await productModel.find({ productCategory: "CPU" });
+            const productsCount = products.reduce((acc, product) => {
+                const year = product.purchaseYear;
+                if (acc[year]) {
+                  acc[year]++;
+                } else {
+                  acc[year] = 1;
+                }
+                return acc;
+              }, {});
+            return res.success(201, "All CPU found successfully.", productsCount);
         } catch (error) {
             console.log("Transaction aborted : " + error);
             return res.error(400, error, null);
